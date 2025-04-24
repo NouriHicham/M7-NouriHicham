@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\pokemon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PokemonController extends Controller
 {
@@ -23,11 +24,22 @@ class PokemonController extends Controller
     }
 
     public function store(Request $request){
-        $pokemon = pokemon::create($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'image' => 'required|url',
         ]);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        $pokemon = pokemon::create($request->all());
         return response()->json(['pokemon' => $pokemon], 201);
+        // $pokemon = pokemon::create($request->all(), [
+        //     'name' => 'required|string',
+        //     'image' => 'required|url',
+        // ]);
+        // return response()->json(['pokemon' => $pokemon], 201);
     }
 
     public function update(Request $request, $id){
