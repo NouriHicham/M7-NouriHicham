@@ -43,12 +43,18 @@ class PokemonController extends Controller
     }
 
     public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'image' => 'required|url',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $pokemon = pokemon::find($id);
         if($pokemon){
-            $pokemon->update($request->all(), [
-                'name' => 'required|string',
-                'image' => 'required|url',
-            ]);
+            $pokemon->update($request->all());
             return response()->json(['pokemon' => $pokemon], 200);
         }else{
             return response()->json(['error' => 'Pokemon not found'], 404);
@@ -56,12 +62,18 @@ class PokemonController extends Controller
     }
 
     public function updatePartial(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string',
+            'image' => 'sometimes|url',
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $pokemon = pokemon::find($id);
         if($pokemon){
-            $pokemon->update($request->all(), [
-                'name' => 'string',
-                'image' => 'url',
-            ]);
+            $pokemon->update($request->all());
             return response()->json(['pokemon' => $pokemon], 200);
         }else{
             return response()->json(['error' => 'Pokemon not found'], 404);
