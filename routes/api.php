@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\PokemonController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GameController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsUserAuth;
 use Illuminate\Http\Request;
@@ -22,6 +24,20 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'getUser']);
     Route::post('/pokemon', [PokemonController::class, 'store']);
+    // partidas
+    Route::get('/games', [GameController::class, 'index']);
+    Route::post('/games', [GameController::class, 'store']);
+    Route::put('/games/{game}/finish', [GameController::class, 'update']);
+    Route::delete('/games/{game}', [GameController::class, 'destroy']);
+    Route::get('/ranking', [GameController::class, 'ranking']);
+    Route::get('/games/user/{id}', [GameController::class, 'getGamesByUserId']);
+    // categorias
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+    Route::get('/cards/category/{categoryId}', [PokemonController::class, 'getByCategory']);
+
 });
 
 //rutas admin

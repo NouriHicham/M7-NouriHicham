@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\pokemon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -88,6 +89,12 @@ class PokemonController extends Controller
         }else{
             return response()->json(['error' => 'Pokemon not found'], 404);
         }
+    }
+
+    public function getByCategory($categoryId){
+        $cards = pokemon::where('category_id', $categoryId)->get();
+
+        return response()->json(['cards' => $cards], 200);
     }
 
 }
