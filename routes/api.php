@@ -3,14 +3,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\PetsController;
 use App\Http\Middleware\IsUserAdmin;
-use App\Http\Middleware\IsUserAuth;
+use App\Http\Middleware\IsAuthenticated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware(IsUserAuth::class)->group(function () {
+Route::middleware(IsAuthenticated::class)->group(function () {
     Route::get('user', [AuthController::class, 'getUser']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('pets', [PetsController::class, 'index']);
