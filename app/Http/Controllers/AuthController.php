@@ -113,6 +113,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
         $targetUser = User::findOrFail($id);
+        $targetUser->pets()->delete();
         $targetUser->delete();
         return response()->json(null, 204);
     }

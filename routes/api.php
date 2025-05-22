@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\PetsController;
-use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsUserAdmin;
 use App\Http\Middleware\IsUserAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +20,7 @@ Route::middleware(IsUserAuth::class)->group(function () {
     Route::delete('pets/{id}', [PetsController::class, 'destroy']);
 });
 
-Route::middleware(IsAdmin::class)->group(function () {
+Route::middleware(IsUserAdmin::class)->group(function () {
     Route::get('users/{id}/pets', [PetsController::class, 'userPets']);
     Route::get('users', [AuthController::class, 'allUsers']);
     Route::get('users/{id}', [AuthController::class, 'showUser']);
