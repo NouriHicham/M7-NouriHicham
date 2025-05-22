@@ -74,4 +74,46 @@ class AuthController extends Controller
             return response()->json(['message' => 'Failed to logout, token invalid'], 400);
         }
     }
+
+    public function allUsers()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        $users = User::all();
+        return response()->json(['users' => $users], 200);
+    }
+
+    public function showUser($id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        $targetUser = User::findOrFail($id);
+        return response()->json(['user' => $targetUser], 200);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        $targetUser = User::findOrFail($id);
+        $targetUser->update($request->all());
+        return response()->json(['user' => $targetUser], 200);
+    }
+
+    public function deleteUser($id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin') {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        $targetUser = User::findOrFail($id);
+        $targetUser->delete();
+        return response()->json(null, 204);
+    }
 }
