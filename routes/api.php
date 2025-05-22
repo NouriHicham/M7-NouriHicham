@@ -20,7 +20,7 @@ Route::middleware(IsUserAuth::class)->group(function () {
     Route::delete('pets/{id}', [PetsController::class, 'destroy']);
 });
 
-Route::middleware((IsAdmin::class))->group(function () {
+Route::middleware(IsAdmin::class)->group(function () {
     Route::get('users/{id}/pets', [PetsController::class, 'userPets']);
     Route::get('users', [AuthController::class, 'allUsers']);
     Route::get('users/{id}', [AuthController::class, 'showUser']);
