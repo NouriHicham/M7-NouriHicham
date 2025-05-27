@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -78,9 +79,9 @@ class AuthController extends Controller
 
     }
 
-    public function getUser()
+    public function getUser($id)
     {
-        $user = Auth::user();
+        $user = User::find($id);
         return response()->json([
             'message' => 'User retrieved successfully',
             'data' => $user,
@@ -99,6 +100,15 @@ class AuthController extends Controller
                 'message' => 'Failed to logout, please try again',
             ], 500);
         }
+    }
+
+    public function getUsers()
+    {
+        $users = User::all();
+        return response()->json([
+            'message' => 'Users retrieved successfully',
+            'data' => $users,
+        ], 200);
     }
 
 }
