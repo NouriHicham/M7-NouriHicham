@@ -18,6 +18,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('/pokemon', [PokemonController::class, 'index']);
 Route::get('/pokemon/{id}', [PokemonController::class, 'show']);
+Route::get('public-pokemons', [PokemonController::class, 'publicPokemons']);
 
 // routes protegidas
 Route::middleware([IsUserAuth::class])->group(function () {
@@ -38,10 +39,13 @@ Route::middleware([IsUserAuth::class])->group(function () {
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
     Route::get('/cards/category/{categoryId}', [PokemonController::class, 'getByCategory']);
 
+    Route::get('/my-pokemons', [PokemonController::class, 'myPokemons']);
+
 });
 
 //rutas admin
 Route::middleware([IsAdmin::class])->group(function () {
+    // gestionar usuaris
     Route::get('users', [AuthController::class, 'getUsers']);
     Route::get('user/{id}', [AuthController::class, 'getUser']);
     Route::put('user/{id}', [AuthController::class, 'updateUser']);
@@ -51,5 +55,10 @@ Route::middleware([IsAdmin::class])->group(function () {
     Route::put('/pokemon/{id}', [PokemonController::class, 'update']);
     Route::patch('/pokemon/{id}', [PokemonController::class, 'updatePartial']);
     Route::delete('/pokemon/{id}', [PokemonController::class, 'destroy']);
-
+    // crud partidas
+    Route::get('/games', [GameController::class, 'index']);
+    Route::post('/games', [GameController::class, 'store']);
+    Route::put('/games/{game}/finish', [GameController::class, 'update']);
+    Route::delete('/games/{game}', [GameController::class, 'destroy']);
+    // crud 
 });

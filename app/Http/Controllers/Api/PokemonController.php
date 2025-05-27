@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\pokemon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class PokemonController extends Controller
@@ -28,13 +29,19 @@ class PokemonController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'image' => 'required|url',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         if($validator->fails()){
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $pokemon = pokemon::create($request->all());
+        $pokemon = pokemon::create([
+            'name' => $request->name,
+            'image' => $request->image,
+            'category_id' => $request->category_id,
+            'user_id' => Auth::id(),
+        ]);
         return response()->json(['pokemon' => $pokemon], 201);
         // $pokemon = pokemon::create($request->all(), [
         //     'name' => 'required|string',
@@ -82,7 +89,13 @@ class PokemonController extends Controller
     }
 
     public function destroy($id){
+        $user = Auth::user();
         $pokemon = pokemon::find($id);
+
+        if ($user->role !== 'admin' && $user->id !== $pokemon->user_id) {
+            return response()->json(['error' => 'No autoritzat'], 403);
+        }
+
         if($pokemon){
             $pokemon->delete();
             return response()->json(['message' => 'Pokemon #' . $id . ' deleted '], 204);
@@ -95,6 +108,16 @@ class PokemonController extends Controller
         $cards = pokemon::where('category_id', $categoryId)->get();
 
         return response()->json(['cards' => $cards], 200);
+    }
+
+    public function myPokemons(){
+        $pokemon = pokemon::where('user_id', Auth::id())->get();
+        return response()->json(['pokemon' => $pokemon], 200);
+    }
+
+    public function publicPokemons(){
+        $pokemon = pokemon::where('user_id', '==', null)->get();
+        return response()->json(['pokemon' => $pokemon], 200);
     }
 
 }

@@ -16,4 +16,10 @@ class pokemon extends Model
     public function category(){
         return $this->BelongsTo(Category::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
