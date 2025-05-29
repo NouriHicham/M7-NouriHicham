@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-3">Llistat de llibres</h1>
+    <h1 class="mb-3">Llistat de pel·lícules</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -11,20 +11,20 @@
         <thead>
             <tr>
                 <th>Títol</th>
-                <th>Autor</th>
                 <th>Any</th>
+                <th>Duració</th>
                 <th>Accions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($books as $book)
+            @foreach($peliculas as $pelicula)
                 <tr>
-                    <td>{{ $book->title }}</td>
-                    <td>{{ $book->author }}</td>
-                    <td>{{ $book->year }}</td>
+                    <td>{{ $pelicula->title }}</td>
+                    <td>{{ $pelicula->year }}</td>
+                    <td>{{ $pelicula->duration }}</td>
                     <td>
-                        <a href="{{ route('books.edit', $book, false) }}" class="btn btn-warning btn-sm">Editar</a>
-                        <form action="{{ route('books.destroy', $book, false) }}" method="POST" class="d-inline">
+                        <a href="{{ route('peliculas.edit', $pelicula, false) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ route('peliculas.destroy', $pelicula, false) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-danger btn-sm">Eliminar</button>

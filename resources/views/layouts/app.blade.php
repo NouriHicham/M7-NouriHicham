@@ -9,8 +9,8 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('books.index', [], false) }}">Llibres</a>
-            <a class="btn btn-primary" href="{{ route('books.create', [], false) }}">Afegir llibre</a>
+            <a class="navbar-brand" href="{{ route('peliculas.index', [], false) }}">Peliculas</a>
+            <a class="btn btn-primary" href="{{ route('peliculas.create', [], false) }}">Afegir pelicula</a>
         </div>
     </nav>
 

@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="container">
-    <h1>Edita llibre</h1>
-    <form action="{{ route('books.update', $book, false) }}" method="POST">
+    <h1>Edita pel·lícula</h1>
+    <form action="{{ route('peliculas.update', $peliculas, false) }}" method="POST">
         @csrf
         @method('PUT')
-        @include('books.form')
+        @include('peliculas.form')
         <button type="submit" class="btn btn-primary">Actualitza</button>
     </form>
 </div>
