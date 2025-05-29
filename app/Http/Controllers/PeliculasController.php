@@ -43,23 +43,23 @@ class PeliculasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Peliculas $peliculas)
+    public function show(Peliculas $pelicula)
     {
-        return view('peliculas.show', compact('peliculas'));
+        return view('peliculas.show', compact('pelicula'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Peliculas $peliculas)
+    public function edit(Peliculas $pelicula)
     {
-        return view('peliculas.edit', compact('peliculas'));
+        return view('peliculas.edit', compact('pelicula'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Peliculas $peliculas)
+    public function update(Request $request, Peliculas $pelicula)
     {
         $request->validate([
             'title' => 'required',
@@ -68,16 +68,16 @@ class PeliculasController extends Controller
             'duration' => 'required|integer',
         ]);
 
-        $peliculas->update($request->all());
+        $pelicula->update($request->all());
         return redirect()->route('peliculas.index')->with('success', 'Película actualizada correctament!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Peliculas $peliculas)
+    public function destroy(Peliculas $pelicula)
     {
-        $peliculas->delete();
+        $pelicula->delete();
         return redirect()->route('peliculas.index')->with('success', 'Película eliminada correctament!');
     }
 }
