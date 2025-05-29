@@ -79,12 +79,53 @@ class AuthController extends Controller
 
     }
 
-    public function getUser($id)
+    public function getUser($id = null)
     {
+        if (!$id) {
+            $id = Auth::user()->id;
+        }else{
+            $admin = Auth::user()->role;
+            if($admin !== 'admin'){
+                return response()->json([
+                    'message' => 'No autoritzat',
+                ], 403);
+            }
+        }
         $user = User::find($id);
         return response()->json([
             'message' => 'User retrieved successfully',
             'data' => $user,
+        ], 200);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $admin = Auth::user()->role;
+        if($admin !== 'admin'){
+            return response()->json([
+                'message' => 'No autoritzat',
+            ], 403);
+        }
+        $user = User::find($id);
+        $user->update($request->all());
+        return response()->json([
+            'message' => 'User updated successfully',
+            'data' => $user,
+        ], 200);
+    }
+
+    public function deleteUser($id)
+    {
+        $admin = Auth::user()->role;
+        if($admin !== 'admin'){
+            return response()->json([
+                'message' => 'No autoritzat',
+            ], 403);
+        }
+        $user = User::find($id);
+        $user->delete();
+        return response()->json([
+            'message' => 'User deleted successfully',
         ], 200);
     }
 

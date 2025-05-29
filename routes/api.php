@@ -23,7 +23,7 @@ Route::get('public-pokemons', [PokemonController::class, 'publicPokemons']);
 // routes protegidas
 Route::middleware([IsUserAuth::class])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('user', [AuthController::class, 'getUser']);
+    Route::get('me', [AuthController::class, 'getUser']);
     Route::post('/pokemon', [PokemonController::class, 'store']);
     // partidas
     Route::get('/games', [GameController::class, 'index']);
@@ -47,8 +47,8 @@ Route::middleware([IsUserAuth::class])->group(function () {
 Route::middleware([IsAdmin::class])->group(function () {
     // gestionar usuaris
     Route::get('users', [AuthController::class, 'getUsers']);
-    Route::get('user/{id}', [AuthController::class, 'getUser']);
-    Route::put('user/{id}', [AuthController::class, 'updateUser']);
+    Route::get('users/{id}', [AuthController::class, 'getUser']);
+    Route::put('users/{id}', [AuthController::class, 'updateUser']);
     Route::delete('user/{id}', [AuthController::class, 'deleteUser']);
     //pokemon
     Route::post('/pokemon', [PokemonController::class, 'store']);
@@ -60,5 +60,9 @@ Route::middleware([IsAdmin::class])->group(function () {
     Route::post('/games', [GameController::class, 'store']);
     Route::put('/games/{game}/finish', [GameController::class, 'update']);
     Route::delete('/games/{game}', [GameController::class, 'destroy']);
-    // crud 
+    // crud categorias
+    Route::get('/categories', [CategoryController::class, 'index']);
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 });
